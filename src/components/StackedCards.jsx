@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 
-const services = [
+const servicesData = [
   {
   id: 'startup',
   title: 'StartUp AllInOne',
-  icon: Rocket,
   price: '4.999€',
   shortDescription: 'Das komplette Paket für Ihren erfolgreichen Start.',
   description: 'Von der Markenentwicklung bis zur digitalen Präsenz - alles aus einer Hand.',

@@ -13,7 +13,6 @@ import Footer from './components/Footer';
 import Impressum from './pages/Impressum';
 import Datenschutz from './pages/Datenschutz';
 import AGB from './pages/AGB';
-import StackedCards from './components/StackedCards';
 import Growth from './components/Growth';
 function App() {
   return (
@@ -29,7 +28,6 @@ function App() {
               <StatsSection/>
               <Growth/>
               <AboutSection/>
-              <StackedCards/>
               <SupportSection/>
               <TestimonialSlider/>
               <FAQSection/>
