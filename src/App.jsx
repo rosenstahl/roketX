@@ -1,19 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navigation from './components/Navigation';
-import HeroSection from './components/HeroSection';
-import TrustedBySection from './components/TrustedBySection';
-import PackageComparison from './components/PackageComparison';
-import StatsSection from './components/StatsSection';
-import AboutSection from './components/AboutSection';
-import SupportSection from './components/SupportSection';
-import TestimonialSlider from './components/TestimonialSlider';
-import FAQSection from './components/FAQSection';
-import ContactForm from './components/ContactForm';
-import Footer from './components/Footer';
+import Navigation from './Navigation/Navigation';
+import { Hero } from './components/sections/Hero';
+import { TrustedBy } from './components/sections/TrustedBy';
+import { PackageComparison } from './components/sections/PackageComparison';
+import Stats from './components/sections/Stats/Stats';
+import About from './components/sections/About/About';
+import Support from './components/sections/Support/Support';
+import Testimonials from './components/sections/Testimonials/Testimonials';
+import FAQ from './components/sections/FAQ/FAQ';
+import Contact from './components/sections/Contact/Contact';
+import Footer from './components/sections/Footer/Footer';
 import Impressum from './pages/Impressum';
 import Datenschutz from './pages/Datenschutz';
 import AGB from './pages/AGB';
-import Growth from './components/Growth';
+
 function App() {
   return (
     <Router>
@@ -22,16 +22,15 @@ function App() {
         <Routes>
           <Route path="/" element={
             <main>
-              <HeroSection />
-              <TrustedBySection/>
+              <Hero />
+              <TrustedBy/>
               <PackageComparison/>
-              <StatsSection/>
-              <Growth/>
-              <AboutSection/>
-              <SupportSection/>
-              <TestimonialSlider/>
-              <FAQSection/>
-              <ContactForm/>
+              <Stats/>
+              <About/>
+              <Support/>
+              <Testimonials/>
+              <FAQ/>
+              <Contact/>
             </main>
           } />
           <Route path="/kontakt" element={
