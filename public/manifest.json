@@ -1,0 +1,28 @@
+{
+  "name": "roketX",
+  "short_name": "roketX",
+  "description": "Von der kleinen Idee zum erfolgreichen Business",
+  "icons": [
+    {
+      "src": "/images/logos/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/logos/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/logos/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#171614",
+  "background_color": "#171614",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/"
+}
