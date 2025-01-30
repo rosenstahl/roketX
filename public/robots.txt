@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Allow: /en
+Allow: /tr
+Allow: /kontakt
+Allow: /impressum
+Allow: /datenschutz
+Allow: /agb
+
+# Sitemaps
+Sitemap: https://roketx.de/sitemap.xml
+
+# Verzeichnisse die nicht gecrawlt werden sollen
+Disallow: /api/
+Disallow: /assets/
+Disallow: /*.json$
