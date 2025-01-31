@@ -186,7 +186,7 @@ const Footer = () => {
 
             <div className="flex items-center gap-6">
               <motion.a 
-                href="https://instagram.com/roketx"
+                href="https://instagram.com/roketx.de"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/60 hover:text-accent-primary transition-colors duration-300"

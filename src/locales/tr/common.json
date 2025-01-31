@@ -278,7 +278,7 @@
                     },
                     "copyright": "©  {{year}} roketX. Tüm hakları saklıdır.",
                     "social": {
-                      "instagram": "@roketXde"
+                      "instagram": "@roketX.de"
                     }
                   },
                     "notFound": {
@@ -703,9 +703,12 @@
                                         },
                                         "status": {
                                           "online": "Çevrimiçiyiz",
+                                          "offline": "Mesai saatleri dışında",
                                           "response_time": "Ortalama yanıt süresi",
-                                          "minutes": "dakika"
-                                        }
+                                          "minutes": "dakika",
+                                          "business_hours": "Pzt-Cum, 09:00-17:00",
+                                          "back_text": "Yarın saat 9'da tekrar hizmetinizdeyiz"
+                                       }
                                       },
                                         "common": {
                                           "close": "Kapat"

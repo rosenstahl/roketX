@@ -71,11 +71,12 @@ const PackageOption = ({ pkg, isSelected, onSelect }) => {
   const description = t(`contactForm.packageDescriptions.${pkg.id}`);
 
   return (
-    <motion.button
-      onClick={onSelect}
+    <motion.div
+      onClick={() => onSelect()} // Einfacher Click-Handler
       whileHover={{ y: -2 }}
       whileTap={{ scale: 0.98 }}
       className={`
+        cursor-pointer
         relative w-full p-4 rounded-xl text-left transition-all duration-300 border 
         group overflow-hidden
         ${isSelected 
@@ -84,7 +85,7 @@ const PackageOption = ({ pkg, isSelected, onSelect }) => {
         }
       `}
       style={{
-        borderColor: isSelected ? packageColors[pkg.id] : undefined
+        borderColor: isSelected ? pkg.color : undefined
       }}
     >
       {isSelected && (
@@ -131,7 +132,7 @@ const PackageOption = ({ pkg, isSelected, onSelect }) => {
           />
         </motion.div>
       )}
-    </motion.button>
+    </motion.div>
   );
 };
 
@@ -196,9 +197,9 @@ const handleSubmit = async (e) => {
   setLoading(true);
   try {
     await sendEmail(formData, 'contact');
-    setSubmitSuccess(true);
+    setSuccess(true); // Korrigiert zu setSuccess
   } catch (err) {
-    setSubmitError(t('contact.form.error.generic'));
+    setErrors(prev => ({ ...prev, submit: t('contact.form.error.generic') }));
   } finally {
     setLoading(false);
   }

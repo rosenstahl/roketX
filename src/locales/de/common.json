@@ -278,7 +278,7 @@
                 },
                 "copyright": "©  {{year}} roketX. Alle Rechte vorbehalten.",
                 "social": {
-                  "instagram": "@roketXde"
+                  "instagram": "@roketX.de"
                 }
               },
                 "notFound": {
@@ -703,9 +703,12 @@
                                   },
                                   "status": {
                                     "online": "Wir sind online",
+                                    "offline": "Außerhalb der Geschäftszeiten",
                                     "response_time": "Durchschnittliche Antwortzeit",
-                                    "minutes": "Minuten"
-                                  }
+                                    "minutes": "Minuten",
+                                    "business_hours": "Mo-Fr, 9:00-17:00 Uhr",
+                                    "back_text": "Wir sind ab morgen 9 Uhr wieder für Sie da"
+                                 }
                                 },
                                   "common": {
                                     "close": "Schließen"
