@@ -19,6 +19,7 @@ const FormInput = ({ label, error, id, className = '', ...props }) => {
       </label>
       <input
         id={id}
+        data-testid={`input-${id}`}
         className={`
           w-full bg-white border-2 transition-all duration-200
           ${error ? 'border-red-500' : 'border-main-tertiary/10'}
@@ -29,6 +30,7 @@ const FormInput = ({ label, error, id, className = '', ...props }) => {
       />
       {error && (
         <motion.p 
+          data-testid={`error-${id}`}
           initial={{ opacity: 0, y: -10 }} 
           animate={{ opacity: 1, y: 0 }}
           className="mt-1 text-sm text-red-500"
@@ -52,6 +54,7 @@ const FormTextarea = ({ label, error, id, className = '', ...props }) => {
       </label>
       <textarea
         id={id}
+        data-testid={`input-${id}`}
         className={`
           w-full bg-white border-2 transition-all duration-200
           ${error ? 'border-red-500' : 'border-main-tertiary/10'}
@@ -63,6 +66,7 @@ const FormTextarea = ({ label, error, id, className = '', ...props }) => {
       />
       {error && (
         <motion.p 
+          data-testid={`error-${id}`}
           initial={{ opacity: 0, y: -10 }} 
           animate={{ opacity: 1, y: 0 }}
           className="mt-1 text-sm text-red-500"
