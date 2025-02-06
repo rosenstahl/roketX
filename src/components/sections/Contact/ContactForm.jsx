@@ -7,14 +7,19 @@ import Button from '@/components/ui/Button';
 import { packages } from '@/components/sections/PackageComparison/packageData';
 import { sendEmail } from '@/services/emailService';
 
-const FormInput = ({ label, error, className = '', ...props }) => {
+const FormInput = ({ label, error, id, className = '', ...props }) => {
   const { t } = useTranslation('common');
   return (
     <div className={className}>
-      <label className="block text-main-tertiary text-sm font-medium mb-2">
+      <label 
+        htmlFor={id} 
+        className="block text-main-tertiary text-sm font-medium mb-2"
+      >
         {label}
       </label>
       <input
+        id={id}
+        data-testid={`input-${id}`}
         className={`
           w-full bg-white border-2 transition-all duration-200
           ${error ? 'border-red-500' : 'border-main-tertiary/10'}
@@ -25,6 +30,7 @@ const FormInput = ({ label, error, className = '', ...props }) => {
       />
       {error && (
         <motion.p 
+          data-testid={`error-${id}`}
           initial={{ opacity: 0, y: -10 }} 
           animate={{ opacity: 1, y: 0 }}
           className="mt-1 text-sm text-red-500"
@@ -36,14 +42,19 @@ const FormInput = ({ label, error, className = '', ...props }) => {
   );
 };
 
-const FormTextarea = ({ label, error, className = '', ...props }) => {
+const FormTextarea = ({ label, error, id, className = '', ...props }) => {
   const { t } = useTranslation('common');
   return (
     <div className={className}>
-      <label className="block text-main-tertiary text-sm font-medium mb-2">
+      <label 
+        htmlFor={id} 
+        className="block text-main-tertiary text-sm font-medium mb-2"
+      >
         {label}
       </label>
       <textarea
+        id={id}
+        data-testid={`input-${id}`}
         className={`
           w-full bg-white border-2 transition-all duration-200
           ${error ? 'border-red-500' : 'border-main-tertiary/10'}
@@ -55,6 +66,7 @@ const FormTextarea = ({ label, error, className = '', ...props }) => {
       />
       {error && (
         <motion.p 
+          data-testid={`error-${id}`}
           initial={{ opacity: 0, y: -10 }} 
           animate={{ opacity: 1, y: 0 }}
           className="mt-1 text-sm text-red-500"
@@ -189,21 +201,20 @@ export default function ContactForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-// src/components/sections/Contact/ContactForm.jsx
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!validateForm()) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
 
-  setLoading(true);
-  try {
-    await sendEmail(formData, 'contact');
-    setSuccess(true); // Korrigiert zu setSuccess
-  } catch (err) {
-    setErrors(prev => ({ ...prev, submit: t('contact.form.error.generic') }));
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    try {
+      await sendEmail(formData, 'contact');
+      setSuccess(true);
+    } catch (err) {
+      setErrors(prev => ({ ...prev, submit: t('contact.form.error.generic') }));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (success) {
     return <SuccessState />;
@@ -213,6 +224,7 @@ const handleSubmit = async (e) => {
     <form onSubmit={handleSubmit} className="p-8 space-y-6">
       <div className="grid md:grid-cols-2 gap-6">
         <FormInput
+          id="name"
           label={t('contactForm.fields.name.label')}
           value={formData.name}
           onChange={(e) => setFormData({...formData, name: e.target.value})}
@@ -221,6 +233,7 @@ const handleSubmit = async (e) => {
           required
         />
         <FormInput
+          id="email"
           label={t('contactForm.fields.email.label')}
           type="email"
           value={formData.email}
@@ -233,6 +246,7 @@ const handleSubmit = async (e) => {
 
       <div className="grid md:grid-cols-2 gap-6">
         <FormInput
+          id="phone"
           label={t('contactForm.fields.phone.label')}
           type="tel"
           value={formData.phone}
@@ -240,6 +254,7 @@ const handleSubmit = async (e) => {
           placeholder={t('contactForm.fields.phone.placeholder')}
         />
         <FormInput
+          id="company"
           label={t('contactForm.fields.company.label')}
           value={formData.company}
           onChange={(e) => setFormData({...formData, company: e.target.value})}
@@ -264,6 +279,7 @@ const handleSubmit = async (e) => {
       </div>
 
       <FormTextarea
+        id="message"
         label={t('contactForm.fields.message.label')}
         value={formData.message}
         onChange={(e) => setFormData({...formData, message: e.target.value})}

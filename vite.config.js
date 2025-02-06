@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => ({
             sizes: '512x512',
             type: 'image/png'
           }
-              ]
+        ]
       }
     })
   ],
@@ -98,5 +98,22 @@ export default defineConfig(({ mode }) => ({
     reportCompressedSize: true,
     cssCodeSplit: true,
     cssMinify: true,
+  },
+  // Neue Test-Konfiguration
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.js'],
+    include: ['src/**/*.{test,spec}.{js,jsx}'],
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'node_modules/',
+        'src/test/setup.js',
+      ],
+    },
+    deps: {
+      inline: ['@testing-library/user-event', '@testing-library/dom']
+    }
   }
 }))

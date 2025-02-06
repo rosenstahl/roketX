@@ -7,12 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@react-spring/three": "^9.7.5",
     "@react-three/drei": "^9.120.8",
     "@react-three/fiber": "^8.17.12",
+    "@sentry/react": "^8.53.0",
+    "@sentry/tracing": "^7.120.3",
     "@theme-toggles/react": "^4.1.0",
     "framer-motion": "^11.17.0",
     "glslify": "^7.1.1",
@@ -29,6 +34,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
@@ -39,10 +46,12 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "globals": "^15.14.0",
+    "jsdom": "^26.0.0",
     "postcss": "^8.4.49",
     "sharp": "^0.33.5",
     "tailwindcss": "^3.4.17",
     "vite": "^6.0.5",
-    "vite-plugin-pwa": "^0.21.1"
+    "vite-plugin-pwa": "^0.21.1",
+    "vitest": "^3.0.4"
   }
 }

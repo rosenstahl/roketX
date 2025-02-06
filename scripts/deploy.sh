@@ -40,3 +40,10 @@ echo "Deploying to production..."
 # Hier kommt Ihr spezifischer Deploy-Befehl
 
 echo "${GREEN}✅ Deployment completed successfully!${NC}"
+
+# Ergänzung in .github/workflows/main.yml im test job
+- name: Run Linting
+  run: npm run lint
+  
+- name: Run Type Checks
+  run: npm run typecheck # falls TypeScript verwendet wird

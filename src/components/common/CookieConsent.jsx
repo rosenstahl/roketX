@@ -37,13 +37,13 @@ function CookieConsent() {
 
   return (
     <div 
-      className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-gradient-to-t from-gray-900 to-transparent"
+      className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-gray-900 to-transparent"
       role="alertdialog"
       aria-labelledby="cookie-title"
       aria-describedby="cookie-desc"
     >
-      <ScrollAnimation direction="up">
-        <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-xl">
+      <ScrollAnimation direction="down">
+        <div className="max-w-4xl mx-auto bg-white rounded-b-xl shadow-xl">
           <div className="p-6">
             {/* Header */}
             <div className="flex items-start justify-between mb-4 border-b border-gray-100 pb-4">
