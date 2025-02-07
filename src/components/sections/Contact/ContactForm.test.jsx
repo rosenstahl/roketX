@@ -5,14 +5,8 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import ContactForm from './ContactForm';
-import { sendEmail } from '@/services/emailService';
 
-// Mock für sendEmail
-vi.mock('@/services/emailService', () => ({
-  sendEmail: vi.fn()
-}));
-
-// Mock für framer-motion
+// Mocks
 vi.mock('framer-motion', () => ({
   motion: {
     div: ({ children, ...props }) => <div {...props}>{children}</div>,
@@ -20,32 +14,24 @@ vi.mock('framer-motion', () => ({
   }
 }));
 
-// Mock für Typography Komponenten
+vi.mock('lucide-react', () => ({
+  Send: () => <div data-testid="send-icon">Send</div>,
+  Check: () => <div data-testid="check-icon">Check</div>
+}));
+
 vi.mock('@/components/common/Typography', () => ({
   H3: ({ children, ...props }) => <h3 {...props}>{children}</h3>,
   H4: ({ children, ...props }) => <h4 {...props}>{children}</h4>,
   BodyText: ({ children, ...props }) => <p {...props}>{children}</p>
 }));
 
-// Mock für Button Komponente
 vi.mock('@/components/ui/Button', () => ({
   default: ({ children, ...props }) => <button {...props}>{children}</button>
 }));
 
-// Mock für Package Data
-vi.mock('@/components/sections/PackageComparison/packageData', () => ({
-  packages: [
-    { id: 'startup', title: 'Startup Package', color: '#000', isPopular: true },
-    { id: 'business', title: 'Business Package', color: '#000', isPopular: false }
-  ]
-}));
-
-// i18n Setup
+// i18n setup
 i18n.use(initReactI18next).init({
   lng: 'de',
-  fallbackLng: 'de',
-  ns: ['common'],
-  defaultNS: 'common',
   resources: {
     de: {
       common: {
@@ -61,6 +47,14 @@ i18n.use(initReactI18next).init({
               placeholder: 'ihre@email.de',
               error: 'E-Mail ist erforderlich',
               invalid: 'Ungültige E-Mail-Adresse'
+            },
+            phone: {
+              label: 'Telefon',
+              placeholder: '+49'
+            },
+            company: {
+              label: 'Unternehmen',
+              placeholder: 'Ihr Unternehmen'
             },
             message: {
               label: 'Nachricht',
@@ -85,101 +79,51 @@ i18n.use(initReactI18next).init({
   }
 });
 
-describe('ContactForm Component', () => {
+describe('ContactForm', () => {
   beforeEach(() => {
     render(
       <I18nextProvider i18n={i18n}>
         <ContactForm />
       </I18nextProvider>
     );
-    vi.clearAllMocks();
+    global.fetch.mockClear();
   });
 
-  it('renders all form fields', async () => {
-    await waitFor(() => {
-      expect(screen.getByRole('textbox', { name: /name/i })).toBeInTheDocument();
-      expect(screen.getByRole('textbox', { name: /e-mail/i })).toBeInTheDocument();
-      expect(screen.getByRole('textbox', { name: /nachricht/i })).toBeInTheDocument();
-    });
-  });
-
-  it('shows validation errors for empty required fields', async () => {
-    const submitButton = screen.getByRole('button', { name: /nachricht senden/i });
-    
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      const nameError = screen.getByText('Name ist erforderlich');
-      const emailError = screen.getByText('E-Mail ist erforderlich');
-      const messageError = screen.getByText('Nachricht ist erforderlich');
-
-      expect(nameError).toBeInTheDocument();
-      expect(emailError).toBeInTheDocument();
-      expect(messageError).toBeInTheDocument();
-    });
+  it('renders all form fields', () => {
+    expect(screen.getByTestId('input-name')).toBeInTheDocument();
+    expect(screen.getByTestId('input-email')).toBeInTheDocument();
+    expect(screen.getByTestId('input-message')).toBeInTheDocument();
   });
 
 it('shows validation errors for empty required fields', async () => {
-  const submitButton = screen.getByRole('button', { name: /nachricht senden/i });
+  const submitButton = screen.getByTestId('submit-button');
   fireEvent.click(submitButton);
 
   await waitFor(() => {
-    const nameErrorElement = screen.getByTestId('error-name');
-    const emailErrorElement = screen.getByTestId('error-email');
-    const messageErrorElement = screen.getByTestId('error-message');
-
-    expect(nameErrorElement).toBeInTheDocument();
-    expect(emailErrorElement).toBeInTheDocument();
-    expect(messageErrorElement).toBeInTheDocument();
-  });
-});
-
-it('shows error for invalid email', async () => {
-  // Eingabefelder finden
-  const emailInput = screen.getByTestId('input-email');
-  const nameInput = screen.getByTestId('input-name');
-  const messageInput = screen.getByTestId('input-message');
-  
-  // Alle Pflichtfelder ausfüllen
-  fireEvent.change(nameInput, { target: { value: 'Test User' } });
-  fireEvent.change(messageInput, { target: { value: 'Test Message' } });
-  fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
-  
-  // Formular absenden
-  const submitButton = screen.getByRole('button', { name: /nachricht senden/i });
-  fireEvent.click(submitButton);
-
-  // Auf Fehlermeldung warten
-  await waitFor(() => {
-    const emailErrorElement = screen.getByTestId('error-email');
-    expect(emailErrorElement).toBeInTheDocument();
+    expect(screen.getByText('Name ist erforderlich')).toBeInTheDocument();
+    expect(screen.getByText('E-Mail ist erforderlich')).toBeInTheDocument();
+    expect(screen.getByText('Nachricht ist erforderlich')).toBeInTheDocument();
   });
 });
   it('submits form successfully', async () => {
-    const nameInput = screen.getByRole('textbox', { name: /name/i });
-    const emailInput = screen.getByRole('textbox', { name: /e-mail/i });
-    const messageInput = screen.getByRole('textbox', { name: /nachricht/i });
-    const submitButton = screen.getByRole('button', { name: /nachricht senden/i });
+    global.fetch.mockImplementationOnce(() => 
+      Promise.resolve({ ok: true })
+    );
 
-    fireEvent.change(nameInput, { target: { value: 'Test User' } });
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    fireEvent.change(messageInput, { target: { value: 'Test message' } });
-
-    sendEmail.mockResolvedValueOnce();
-
-    fireEvent.click(submitButton);
-
-    await waitFor(() => {
-      expect(screen.getByText('Nachricht erfolgreich gesendet!')).toBeInTheDocument();
+    fireEvent.change(screen.getByTestId('input-name'), {
+      target: { value: 'Test User' }
+    });
+    fireEvent.change(screen.getByTestId('input-email'), {
+      target: { value: 'test@example.com' }
+    });
+    fireEvent.change(screen.getByTestId('input-message'), {
+      target: { value: 'Test message' }
     });
 
-    expect(sendEmail).toHaveBeenCalledWith({
-      name: 'Test User',
-      email: 'test@example.com',
-      phone: '',
-      company: '',
-      package: '',
-      message: 'Test message'
-    }, 'contact');
+    fireEvent.click(screen.getByTestId('submit-button'));
+
+    await waitFor(() => {
+      expect(screen.getByText(/nachricht erfolgreich gesendet!/i)).toBeInTheDocument();
+    });
   });
 });

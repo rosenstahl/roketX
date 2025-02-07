@@ -2,6 +2,9 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
+// Mock für window.fetch (für emailService)
+global.fetch = vi.fn();
+
 // Mock für IntersectionObserver (wird für Ihre ScrollAnimation Komponente benötigt)
 global.IntersectionObserver = class IntersectionObserver {
   constructor() {}
@@ -31,4 +34,5 @@ global.scrollTo = vi.fn();
 // Clean up nach jedem Test
 afterEach(() => {
   vi.clearAllMocks();
+  global.fetch.mockClear();
 });

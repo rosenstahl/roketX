@@ -8,19 +8,15 @@ import { packages } from '@/components/sections/PackageComparison/packageData';
 import { sendEmail } from '@/services/emailService';
 
 const FormInput = ({ label, error, name, className = '', ...props }) => {
-  const inputId = `form-${name}`;
   return (
     <div className={className}>
       <label 
-        htmlFor={inputId} 
         className="block text-main-tertiary text-sm font-medium mb-2"
       >
         {label}
       </label>
       <input
-        id={inputId}
-        name={name}
-        data-testid={`input-${name}`}
+        data-testid={`input-${name}`}  // bereits vorhanden
         className={`
           w-full bg-white border-2 transition-all duration-200
           ${error ? 'border-red-500' : 'border-main-tertiary/10'}
@@ -29,34 +25,30 @@ const FormInput = ({ label, error, name, className = '', ...props }) => {
         `}
         {...props}
       />
-{error && (
-  <motion.p 
-    data-testid={`error-${name}`}
-    data-error={error} // Hinzufügen eines data-error Attributs
-    initial={{ opacity: 0, y: -10 }} 
-    animate={{ opacity: 1, y: 0 }}
-    className="mt-1 text-sm text-red-500"
-  >
-    {error}
-  </motion.p>
-)}    </div>
+      {error && (
+        <motion.p 
+          data-testid={`error-${name}`}  // Diese Zeile fehlt noch
+          initial={{ opacity: 0, y: -10 }} 
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-1 text-sm text-red-500"
+        >
+          {error}
+        </motion.p>
+      )}
+    </div>
   );
 };
 
 const FormTextarea = ({ label, error, name, className = '', ...props }) => {
-  const textareaId = `form-${name}`;
   return (
     <div className={className}>
       <label 
-        htmlFor={textareaId} 
         className="block text-main-tertiary text-sm font-medium mb-2"
       >
         {label}
       </label>
       <textarea
-        id={textareaId}
-        name={name}
-        data-testid={`input-${name}`}
+        data-testid={`input-${name}`}  // bereits vorhanden
         className={`
           w-full bg-white border-2 transition-all duration-200
           ${error ? 'border-red-500' : 'border-main-tertiary/10'}
@@ -68,7 +60,7 @@ const FormTextarea = ({ label, error, name, className = '', ...props }) => {
       />
       {error && (
         <motion.p 
-          data-testid={`error-${name}`}
+          data-testid={`error-${name}`}  // Diese Zeile fehlt noch
           initial={{ opacity: 0, y: -10 }} 
           animate={{ opacity: 1, y: 0 }}
           className="mt-1 text-sm text-red-500"
@@ -225,15 +217,15 @@ export default function ContactForm() {
   return (
 <form onSubmit={handleSubmit} className="p-8 space-y-6">
   <div className="grid md:grid-cols-2 gap-6">
-    <FormInput
-      name="name"
-      label={t('contactForm.fields.name.label')}
-      value={formData.name}
-      onChange={(e) => setFormData({...formData, name: e.target.value})}
-      placeholder={t('contactForm.fields.name.placeholder')}
-      error={errors.name}
-      required
-    />
+  <FormInput
+  name="name"
+  label={t('contactForm.fields.name.label')}
+  value={formData.name}
+  onChange={(e) => setFormData({...formData, name: e.target.value})}
+  placeholder={t('contactForm.fields.name.placeholder')}
+  error={errors.name}
+  required
+/>
     <FormInput
       name="email"
       label={t('contactForm.fields.email.label')}
