@@ -54,12 +54,6 @@ describe('Navigation Component', () => {
     expect(screen.getByAltText('Kontakt')).toBeInTheDocument();
   });
 
-  it('renders WhatsApp link', () => {
-    const whatsappLink = screen.getByRole('link', { name: /whatsapp/i });
-    expect(whatsappLink).toHaveAttribute('href', 'https://wa.me/491738528482');
-    expect(whatsappLink).toHaveAttribute('target', '_blank');
-  });
-
   it('renders language selector', () => {
     const languageButton = screen.getByRole('button', { name: /deutsch/i });
     expect(languageButton).toBeInTheDocument();

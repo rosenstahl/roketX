@@ -23,13 +23,6 @@ export const navigationItems = [
     action: 'scroll-to-packages'
   },
   {
-    id: 'whatsapp',
-    label: 'WhatsApp', // WhatsApp bleibt gleich
-    icon: 'whatsapp.svg',
-    type: 'external',
-    href: 'https://wa.me/491738528482'
-  },
-  {
     id: 'contact',
     label: {
       de: 'Kontakt',

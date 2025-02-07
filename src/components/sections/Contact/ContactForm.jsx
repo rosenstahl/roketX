@@ -7,19 +7,20 @@ import Button from '@/components/ui/Button';
 import { packages } from '@/components/sections/PackageComparison/packageData';
 import { sendEmail } from '@/services/emailService';
 
-const FormInput = ({ label, error, id, className = '', ...props }) => {
-  const { t } = useTranslation('common');
+const FormInput = ({ label, error, name, className = '', ...props }) => {
+  const inputId = `form-${name}`;
   return (
     <div className={className}>
       <label 
-        htmlFor={id} 
+        htmlFor={inputId} 
         className="block text-main-tertiary text-sm font-medium mb-2"
       >
         {label}
       </label>
       <input
-        id={id}
-        data-testid={`input-${id}`}
+        id={inputId}
+        name={name}
+        data-testid={`input-${name}`}
         className={`
           w-full bg-white border-2 transition-all duration-200
           ${error ? 'border-red-500' : 'border-main-tertiary/10'}
@@ -28,33 +29,34 @@ const FormInput = ({ label, error, id, className = '', ...props }) => {
         `}
         {...props}
       />
-      {error && (
-        <motion.p 
-          data-testid={`error-${id}`}
-          initial={{ opacity: 0, y: -10 }} 
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-1 text-sm text-red-500"
-        >
-          {error}
-        </motion.p>
-      )}
-    </div>
+{error && (
+  <motion.p 
+    data-testid={`error-${name}`}
+    data-error={error} // Hinzufügen eines data-error Attributs
+    initial={{ opacity: 0, y: -10 }} 
+    animate={{ opacity: 1, y: 0 }}
+    className="mt-1 text-sm text-red-500"
+  >
+    {error}
+  </motion.p>
+)}    </div>
   );
 };
 
-const FormTextarea = ({ label, error, id, className = '', ...props }) => {
-  const { t } = useTranslation('common');
+const FormTextarea = ({ label, error, name, className = '', ...props }) => {
+  const textareaId = `form-${name}`;
   return (
     <div className={className}>
       <label 
-        htmlFor={id} 
+        htmlFor={textareaId} 
         className="block text-main-tertiary text-sm font-medium mb-2"
       >
         {label}
       </label>
       <textarea
-        id={id}
-        data-testid={`input-${id}`}
+        id={textareaId}
+        name={name}
+        data-testid={`input-${name}`}
         className={`
           w-full bg-white border-2 transition-all duration-200
           ${error ? 'border-red-500' : 'border-main-tertiary/10'}
@@ -66,7 +68,7 @@ const FormTextarea = ({ label, error, id, className = '', ...props }) => {
       />
       {error && (
         <motion.p 
-          data-testid={`error-${id}`}
+          data-testid={`error-${name}`}
           initial={{ opacity: 0, y: -10 }} 
           animate={{ opacity: 1, y: 0 }}
           className="mt-1 text-sm text-red-500"
@@ -221,97 +223,98 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-8 space-y-6">
-      <div className="grid md:grid-cols-2 gap-6">
-        <FormInput
-          id="name"
-          label={t('contactForm.fields.name.label')}
-          value={formData.name}
-          onChange={(e) => setFormData({...formData, name: e.target.value})}
-          placeholder={t('contactForm.fields.name.placeholder')}
-          error={errors.name}
-          required
-        />
-        <FormInput
-          id="email"
-          label={t('contactForm.fields.email.label')}
-          type="email"
-          value={formData.email}
-          onChange={(e) => setFormData({...formData, email: e.target.value})}
-          placeholder={t('contactForm.fields.email.placeholder')}
-          error={errors.email}
-          required
-        />
-      </div>
+<form onSubmit={handleSubmit} className="p-8 space-y-6">
+  <div className="grid md:grid-cols-2 gap-6">
+    <FormInput
+      name="name"
+      label={t('contactForm.fields.name.label')}
+      value={formData.name}
+      onChange={(e) => setFormData({...formData, name: e.target.value})}
+      placeholder={t('contactForm.fields.name.placeholder')}
+      error={errors.name}
+      required
+    />
+    <FormInput
+      name="email"
+      label={t('contactForm.fields.email.label')}
+      type="email"
+      value={formData.email}
+      onChange={(e) => setFormData({...formData, email: e.target.value})}
+      placeholder={t('contactForm.fields.email.placeholder')}
+      error={errors.email}
+      required
+    />
+  </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <FormInput
-          id="phone"
-          label={t('contactForm.fields.phone.label')}
-          type="tel"
-          value={formData.phone}
-          onChange={(e) => setFormData({...formData, phone: e.target.value})}
-          placeholder={t('contactForm.fields.phone.placeholder')}
+  <div className="grid md:grid-cols-2 gap-6">
+    <FormInput
+      name="phone"
+      label={t('contactForm.fields.phone.label')}
+      type="tel"
+      value={formData.phone}
+      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+      placeholder={t('contactForm.fields.phone.placeholder')}
+    />
+    <FormInput
+      name="company"
+      label={t('contactForm.fields.company.label')}
+      value={formData.company}
+      onChange={(e) => setFormData({...formData, company: e.target.value})}
+      placeholder={t('contactForm.fields.company.placeholder')}
+    />
+  </div>
+
+  <div>
+    <label className="block text-main-tertiary text-sm font-medium mb-3">
+      {t('contactForm.fields.package.label')}
+    </label>
+    <div className="grid md:grid-cols-2 gap-4">
+      {packages.map((pkg) => (
+        <PackageOption
+          key={pkg.id}
+          pkg={pkg}
+          isSelected={formData.package === pkg.id}
+          onSelect={() => setFormData({...formData, package: pkg.id})}
         />
-        <FormInput
-          id="company"
-          label={t('contactForm.fields.company.label')}
-          value={formData.company}
-          onChange={(e) => setFormData({...formData, company: e.target.value})}
-          placeholder={t('contactForm.fields.company.placeholder')}
-        />
-      </div>
+      ))}
+    </div>
+  </div>
 
-      <div>
-        <label className="block text-main-tertiary text-sm font-medium mb-3">
-          {t('contactForm.fields.package.label')}
-        </label>
-        <div className="grid md:grid-cols-2 gap-4">
-          {packages.map((pkg) => (
-            <PackageOption
-              key={pkg.id}
-              pkg={pkg}
-              isSelected={formData.package === pkg.id}
-              onSelect={() => setFormData({...formData, package: pkg.id})}
-            />
-          ))}
-        </div>
-      </div>
+  <FormTextarea
+    name="message"
+    label={t('contactForm.fields.message.label')}
+    value={formData.message}
+    onChange={(e) => setFormData({...formData, message: e.target.value})}
+    placeholder={t('contactForm.fields.message.placeholder')}
+    error={errors.message}
+    required
+  />
 
-      <FormTextarea
-        id="message"
-        label={t('contactForm.fields.message.label')}
-        value={formData.message}
-        onChange={(e) => setFormData({...formData, message: e.target.value})}
-        placeholder={t('contactForm.fields.message.placeholder')}
-        error={errors.message}
-        required
-      />
-
-      <div className="flex justify-end">
-        <Button
-          type="submit"
-          variant="primary"
-          disabled={loading}
-          className="min-w-[200px]"
-        >
-          {loading ? (
-            <span className="flex items-center gap-2">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
-              />
-              {t('contactForm.submit.sending')}
-            </span>
-          ) : (
-            <span className="flex items-center gap-2">
-              {t('contactForm.submit.button')}
-              <Send size={16} />
-            </span>
-          )}
-        </Button>
-      </div>
-    </form>
+  <div className="flex justify-end">
+    <Button
+      type="submit"
+      variant="primary"
+      disabled={loading}
+      className="min-w-[200px]"
+      data-testid="submit-button"
+    >
+      {loading ? (
+        <span className="flex items-center gap-2">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+          />
+          {t('contactForm.submit.sending')}
+        </span>
+      ) : (
+        <span className="flex items-center gap-2">
+          {t('contactForm.submit.button')}
+          <Send size={16} />
+        </span>
+      )}
+    </Button>
+  </div>
+</form>
   );
 }

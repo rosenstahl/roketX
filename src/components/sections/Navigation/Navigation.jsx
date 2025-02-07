@@ -25,9 +25,7 @@ const Navigation = () => {
     en: 'English',
     tr: 'Türkçe'
   };
-  
-  const whatsappLink = "https://wa.me/491738528482";
-  
+    
   const scrollToPackages = () => {
     const packagesSection = document.querySelector('.package-comparison');
     if (packagesSection) {
@@ -70,21 +68,7 @@ const Navigation = () => {
               </div>
             </button>
           </li>
-          
-          <li className="nav-item">
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav-item__link"
-            >
-              <img src={getNavigationIcon('whatsapp.svg')} alt="WhatsApp" className="image" />
-              <div className="nav-item__tooltip">
-                <div>WhatsApp</div>
-              </div>
-            </a>
-          </li>
-          
+                    
           <li className="nav-item">
             <Link to="/kontakt" className="nav-item__link">
               <img src={getNavigationIcon('contact.svg')} alt={t('navigation.contact')} className="image" />
