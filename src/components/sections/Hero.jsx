@@ -7,6 +7,8 @@ import Button from '@/components/ui/Button';
 import { Logo } from '@/components/common/Logo';
 import { getTrustedByLogo } from '@/utils/assetHelpers';
 import { ScrollAnimation } from '@/components/ui/ScrollAnimation';
+import OptimizedVideo from '@/components/common/OptimizedVideo';
+
 
 const partners = [
   { id: 1, name: 'Altinzade', logo: getTrustedByLogo('Altinzade.svg') },
@@ -30,20 +32,16 @@ export const Hero = () => {
     <section className="relative h-screen w-full overflow-hidden bg-base-primary">
       {/* Video Background */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-black/60 z-10" />
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-full object-cover"
-          poster="/images/hero-poster.jpg"
-        >
-          <source src="/videos/hero-background.webm" type="video/webm" />
-          <source src="/videos/hero-background.mp4" type="video/mp4" />
-        </video>
-      </div>
+  <div className="absolute inset-0 bg-black/60 z-10" />
+  <OptimizedVideo
+    sources={[
+      { src: '/videos/hero-background.webm', type: 'video/webm' },
+      { src: '/videos/hero-background.mp4', type: 'video/mp4' }
+    ]}
+    poster="/images/hero-poster.jpg"
+    className="w-full h-full object-cover"
+  />
+</div>
 
       {/* Main Content */}
       <div className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
@@ -87,8 +85,8 @@ export const Hero = () => {
       </div>
 
       {/* Partners Section - Improved */}
-      <div className="absolute bottom-0 w-full z-20 bg-gradient-to-t from-black/40 to-transparent">
-        <div className="container mx-auto py-8">
+      <div className="absolute bottom-0 w-full z-20 bg-gradient-to-t from-black/40 to-transparent hidden md:block">
+      <div className="container mx-auto py-8">
           <BodyText className="text-center font-semibold text-white mb-6">
             {t('hero.trusted')}
           </BodyText>

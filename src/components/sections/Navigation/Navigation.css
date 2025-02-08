@@ -82,7 +82,7 @@
   transform: translate(0px, -140%);
 }
 
-/* Mobile Anpassungen */
+/* In Navigation.css die Mobile-Anpassungen ändern */
 @media (max-width: 768px) {
   .nav-wrap {
     bottom: 2vh;
@@ -90,21 +90,30 @@
 
   .nav-list {
     font-size: 16px;
+    gap: 2rem; /* Noch mehr Abstand zwischen Icons */
   }
 
   .nav-item {
-    width: 4em;
+    width: 4.5em; /* Größere Basis-Breite */
+    transition: none;
   }
 
-  .nav-item.hover {
+  /* Hover-Effekte für Mobile entfernen */
+  .nav-item.hover,
+  .nav-item.sibling-close,
+  .nav-item.sibling-far {
     width: 4.5em;
   }
 
-  .nav-item.sibling-close {
-    width: 3.75em;
+  /* VIEL größere Icons für Mobile */
+  .image {
+    width: 40px; /* Deutlich größer */
+    height: 40px; /* Deutlich größer */
+    transition: none;
   }
 
-  .nav-item.sibling-far {
-    width: 3.25em;
+  /* Tooltip auf Mobile deaktivieren */
+  .nav-item__tooltip {
+    display: none;
   }
 }

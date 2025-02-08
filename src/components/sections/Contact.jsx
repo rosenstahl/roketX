@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Check, Rocket, Laptop, Paintbrush, TrendingUp, ArrowRight } from 'lucide-react';
 import { packages } from '@/components/sections/PackageComparison/packageData';
 import { sendEmail } from '@/services/emailService';
+import { trackError } from '@/utils/errorTracking';
 
 // Package Colors - konsistent mit PackageComparison
 const packageColors = {
@@ -227,24 +228,32 @@ const Contact = () => {
     setStep(step - 1);
   };
 
-// src/components/sections/Contact.jsx (nur die handleSubmit Funktion)
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!validateStep(3)) return;
-
-  setLoading(true);
-  try {
-    await sendEmail({
-      ...formData,
-      selectedPackage
-    }, 'landing');
-    setStep(4);
-  } catch (err) {
-    setErrors({ submit: t('contact.form.error.generic') });
-  } finally {
-    setLoading(false);
-  }
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateStep(3)) return;
+  
+    setLoading(true);
+    try {
+      await sendEmail({
+        ...formData,
+        selectedPackage
+      }, 'landing');
+      setStep(4);
+    } catch (err) {
+      trackError(err, {                     // NEUE ZEILEN
+        formData: {                         // NEUE ZEILEN
+          ...formData,                      // NEUE ZEILEN
+          email: 'PRIVATE',                 // NEUE ZEILEN
+          message: 'PRIVATE',               // NEUE ZEILEN
+          selectedPackage                   // NEUE ZEILEN
+        },                                  // NEUE ZEILEN
+        form: 'contact-section'             // NEUE ZEILEN
+      });                                   // NEUE ZEILEN
+      setErrors({ submit: t('contact.form.error.generic') });
+    } finally {
+      setLoading(false);
+    }
+  };  
   return (
     <section className="relative min-h-screen bg-[#171614] py-16 overflow-hidden">
       {/* Background Effects */}

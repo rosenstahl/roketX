@@ -6,6 +6,7 @@ import { H3, H4, BodyText } from '@/components/common/Typography';
 import Button from '@/components/ui/Button';
 import { packages } from '@/components/sections/PackageComparison/packageData';
 import { sendEmail } from '@/services/emailService';
+import { trackError } from '@/utils/errorTracking';
 
 const FormInput = ({ label, error, name, className = '', ...props }) => {
   return (
@@ -204,12 +205,20 @@ export default function ContactForm() {
       await sendEmail(formData, 'contact');
       setSuccess(true);
     } catch (err) {
+      trackError(err, {                    // NEUE ZEILEN
+        formData: {                        // NEUE ZEILEN
+          ...formData,                     // NEUE ZEILEN
+          email: 'PRIVATE',                // NEUE ZEILEN
+          message: 'PRIVATE'               // NEUE ZEILEN
+        },                                 // NEUE ZEILEN
+        form: 'contact-form'               // NEUE ZEILEN
+      });                                  // NEUE ZEILEN
       setErrors(prev => ({ ...prev, submit: t('contact.form.error.generic') }));
     } finally {
       setLoading(false);
     }
   };
-
+    
   if (success) {
     return <SuccessState />;
   }

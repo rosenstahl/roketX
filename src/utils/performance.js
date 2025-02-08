@@ -1,26 +1,43 @@
 // src/utils/performance.js
-export const measurePerformance = () => {
-  if (window.performance && window.performance.mark) {
-    // Wichtige Metriken
-    const navigation = performance.getEntriesByType('navigation')[0];
-    const paint = performance.getEntriesByType('paint');
-    const fcp = paint.find(entry => entry.name === 'first-contentful-paint');
+export const reportWebVitals = () => {
+  if (import.meta.env.VITE_APP_ENV === 'production') {
+    // Basis Performance API
+    try {
+      if (window.performance && window.performance.mark) {
+        const observer = new PerformanceObserver((list) => {
+          list.getEntries().forEach((entry) => {
+            if (window.gtag) {
+              window.gtag('event', entry.name, {
+                value: Math.round(entry.startTime),
+                event_category: 'Performance',
+                non_interaction: true,
+              });
+            }
+          });
+        });
 
-    // Ergebnisse loggen (in Produktion an Analytics senden)
-    console.info('Performance Metrics:', {
-      DNS: navigation.domainLookupEnd - navigation.domainLookupStart,
-      TLS: navigation.connectEnd - navigation.connectStart,
-      TTFB: navigation.responseStart - navigation.requestStart,
-      FCP: fcp ? fcp.startTime : null,
-      Load: navigation.loadEventEnd - navigation.startTime
-    });
+        observer.observe({ entryTypes: ['paint', 'navigation'] });
+      }
+    } catch (error) {
+      console.error('Performance reporting error:', error);
+    }
   }
 };
 
-// Core Web Vitals Metriken
-export const reportWebVitals = ({ name, value, id }) => {
-  // In Produktion an Analytics senden
-  if (window.__APP_ENV__ === 'production') {
-    console.info(`Web Vital: ${name}`, { value, id });
+export const measurePerformance = () => {
+  if (window.performance && window.performance.mark) {
+    try {
+      const navigation = performance.getEntriesByType('navigation')[0];
+      const metrics = {
+        TTFB: navigation.responseStart - navigation.requestStart,
+        Load: navigation.loadEventEnd - navigation.startTime
+      };
+
+      if (import.meta.env.DEV) {
+        console.info('Performance Metrics:', metrics);
+      }
+    } catch (error) {
+      console.error('Performance measurement error:', error);
+    }
   }
 };
