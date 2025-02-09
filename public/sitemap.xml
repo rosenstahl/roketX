@@ -5,6 +5,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://roketx.de/</loc>
+    <lastmod>2025-02-08</lastmod>
     <xhtml:link rel="alternate" hreflang="de" href="https://roketx.de/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://roketx.de/en"/>
     <xhtml:link rel="alternate" hreflang="tr" href="https://roketx.de/tr"/>
@@ -15,6 +16,7 @@
   <!-- Kontakt -->
   <url>
     <loc>https://roketx.de/kontakt</loc>
+    <lastmod>2025-02-08</lastmod>
     <xhtml:link rel="alternate" hreflang="de" href="https://roketx.de/kontakt"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://roketx.de/en/kontakt"/>
     <xhtml:link rel="alternate" hreflang="tr" href="https://roketx.de/tr/kontakt"/>
@@ -25,6 +27,7 @@
   <!-- Impressum -->
   <url>
     <loc>https://roketx.de/impressum</loc>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -32,6 +35,7 @@
   <!-- Datenschutz -->
   <url>
     <loc>https://roketx.de/datenschutz</loc>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -39,6 +43,7 @@
   <!-- AGB -->
   <url>
     <loc>https://roketx.de/agb</loc>
+    <lastmod>2025-02-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
