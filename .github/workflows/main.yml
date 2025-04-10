@@ -53,11 +53,38 @@ jobs:
           VITE_GOOGLE_ANALYTICS_ID: ${{ secrets.VITE_GOOGLE_ANALYTICS_ID }}
           VITE_CALENDLY_URL: ${{ secrets.VITE_CALENDLY_URL }}
 
+      - name: Check build output structure
+        run: |
+          echo "===== Inspecting build output ====="
+          ls -la dist/
+          echo "===== Checking index.html ====="
+          cat dist/index.html
+          echo "===== Checking assets directory ====="
+          ls -la dist/assets/
+          if [ -d "dist/assets/js" ]; then
+            echo "===== Checking JS assets ====="
+            ls -la dist/assets/js/
+          fi
+
       - name: Generate robots.txt
         run: |
           echo "User-agent: *" > dist/robots.txt
           echo "Allow: /" >> dist/robots.txt
           echo "Sitemap: https://roketx.de/sitemap.xml" >> dist/robots.txt
+
+      # Hinzufügen einer leeren .htaccess-Datei, die später durch die im public-Verzeichnis ersetzt wird
+      - name: Ensure .htaccess is included
+        run: |
+          if [ -f "public/.htaccess" ]; then
+            echo "Copying .htaccess from public directory"
+            cp public/.htaccess dist/.htaccess
+          else
+            echo "Creating default .htaccess file"
+            echo "RewriteEngine On" > dist/.htaccess
+            echo "RewriteCond %{REQUEST_FILENAME} !-f" >> dist/.htaccess
+            echo "RewriteCond %{REQUEST_FILENAME} !-d" >> dist/.htaccess
+            echo "RewriteRule ^ index.html [QSA,L]" >> dist/.htaccess
+          fi
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -90,12 +117,18 @@ jobs:
           local-dir: ./dist/
           server-dir: ${{ secrets.FTP_SERVER_DIR }}/
           dangerous-clean-slate: true
+          log-level: verbose
 
       - name: Deployment Status
         if: always()
         run: |
           if [ "${{ job.status }}" == "success" ]; then
             echo "🚀 Deployment erfolgreich abgeschlossen!"
+            echo "Bitte überprüfe, ob die Website jetzt korrekt angezeigt wird: https://roketx.de"
+            echo "Falls nicht, prüfe folgende häufige Fehlerquellen:"
+            echo "1. .htaccess-Datei funktioniert möglicherweise nicht - Kontaktiere den Hosting-Support"
+            echo "2. Browser-Cache leeren und erneut laden"
+            echo "3. Überprüfe die Konsolenausgabe im Browser auf JavaScript-Fehler"
           else
             echo "❌ Deployment fehlgeschlagen!"
             exit 1
