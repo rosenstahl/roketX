@@ -4,3 +4,20 @@ RewriteRule ^index\.html$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.html [L]
+
+# Korrekte MIME-Typen für JavaScript und CSS
+AddType application/javascript .js
+AddType application/javascript .mjs
+AddType text/css .css
+
+# Aktiviere GZIP-Kompression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript
+</IfModule>
+
+# Setze Header für Cross-Origin-Requests
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+</IfModule>
