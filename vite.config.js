@@ -7,8 +7,8 @@ import { VitePWA } from 'vite-plugin-pwa'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-export default defineConfig(({ mode }) => ({
-  base: '/',
+export default defineConfig({
+  base: './',
   plugins: [
     react(),
     VitePWA({
@@ -53,7 +53,7 @@ export default defineConfig(({ mode }) => ({
     }
   },
   define: {
-    '__APP_ENV__': JSON.stringify(mode)
+    '__APP_ENV__': JSON.stringify(process.env.NODE_ENV)
   },
   publicDir: 'public',
   server: {
@@ -67,12 +67,12 @@ export default defineConfig(({ mode }) => ({
     outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true,
-    sourcemap: mode === 'development',
+    sourcemap: false,
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: mode === 'production',
-        drop_debugger: mode === 'production'
+        drop_console: true,
+        drop_debugger: true
       }
     },
     rollupOptions: {
@@ -85,36 +85,10 @@ export default defineConfig(({ mode }) => ({
           i18n: ['i18next', 'react-i18next'],
           animations: ['framer-motion'],
         },
-        assetFileNames: (assetInfo) => {
-          let extType = assetInfo.name.split('.')[1];
-          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
-            extType = 'img';
-          }
-          return `assets/${extType}/[name]-[hash][extname]`;
-        },
+        assetFileNames: 'assets/[ext]/[name]-[hash][extname]',
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
       },
-    },
-    reportCompressedSize: true,
-    cssCodeSplit: true,
-    cssMinify: true,
-  },
-  // Neue Test-Konfiguration
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.js'],
-    include: ['src/**/*.{test,spec}.{js,jsx}'],
-    coverage: {
-      reporter: ['text', 'json', 'html'],
-      exclude: [
-        'node_modules/',
-        'src/test/setup.js',
-      ],
-    },
-    deps: {
-      inline: ['@testing-library/user-event', '@testing-library/dom']
     }
   }
-}))
+})
